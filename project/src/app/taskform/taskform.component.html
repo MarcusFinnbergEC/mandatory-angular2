@@ -1,6 +1,8 @@
 <!-- Add event binding for form submit... -->
-<form 
+<form
   style="margin-bottom: 10px"
+  *ngIf="showTaskForm"
+  #taskForm="ngForm"
   >
 
   <!-- Apply ngModel to this input... -->
@@ -8,9 +10,14 @@
       class="input"
       type="text"
       placeholder="title"
+      [(ngModel)]="newTask.title"
+      name="title"
+      #title="ngModel"
+      required minlength="3"
+      maxlength="30"
   />
   <!-- Markup for error messages... -->
-  <div class="error">
+  <div class="error" *ngIf="title.invalid && (title.dirty || title.touched)">A minimum of 3 characters are required!
   </div>
 
   <!-- Apply ngModel to this input... -->
@@ -18,10 +25,12 @@
       class="input"
       type="text"
       placeholder="description"
+      [(ngModel)]="newTask.description"
+      name="description"
   />
 
   <!-- Disable button if form is invalid. -->
-  <button type="submit">
+  <button [disabled]="!taskForm.form.valid" type="submit" (click)="getValue()">
       Save
   </button>
 </form>
